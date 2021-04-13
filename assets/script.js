@@ -60,6 +60,7 @@ $(document).ready(function () {
     var scope = new paper.PaperScope();
     var scope2 = new paper.PaperScope();
     var scope3 = new paper.PaperScope();
+    var scope4 = new paper.PaperScope();
 
     var canvas_1 = document.getElementById('canvas_1');
     scope.setup(canvas_1)
@@ -67,6 +68,8 @@ $(document).ready(function () {
     scope2.setup(canvas_2)
     var canvas_3 = document.getElementById('canvas_3');
     scope3.setup(canvas_3)
+    var canvas_4 = document.getElementById('canvas_4');
+    scope4.setup(canvas_4)
 
 
     // LINEAR GRID CANVAS
@@ -119,10 +122,6 @@ $(document).ready(function () {
     }
 
     createLines(1, linesCurrentValue)
-
-    scope.onResize = function (event) {
-        console.log(1)
-    }
 
 
     // DOWNLOAD LINES
@@ -198,24 +197,23 @@ $(document).ready(function () {
 
     // RECTS GRID CANVAS
     scope3.activate();
-    var path = scope3.project.importSVG(document.getElementById('goldenRatioSVG'));
+    var pathRect = scope3.project.importSVG(document.getElementById('rectanglesSVG'));
     var rectsGroup = new scope3.Group()
-    path.fitBounds(scope3.view.bounds.scale(0.8))
-    path.visible = false
+    pathRect.fitBounds(scope3.view.bounds.scale(0.8))
+    pathRect.visible = false
 
     function createRects(amount) {
         rectsGroup.removeChildren()
-        var maxAmount = path.children.length
+        var maxAmount = pathRect.children.length
 
         for (var i = 1; i < amount; i++) {
             var rect = new scope3.Path.Rectangle({
-                size: path.children[i].bounds,
+                size: pathRect.children[i].bounds,
                 strokeColor: strokeColor,
                 strokeWidth: strokeWidth,
-                position: path.children[i].position,
+                position: pathRect.children[i].position,
                 parent: rectsGroup
             })
-
         }
 
         for (var i = 0; i < rectsGroup.children.length; i++) {
@@ -225,6 +223,8 @@ $(document).ready(function () {
         }
 
     }
+
+
 
     createRects(rectanglesInput.value)
 
@@ -237,9 +237,67 @@ $(document).ready(function () {
 
     // DOWNLOAD CIRCLES
     downloadRectangles.onclick = function () {
+        pathRect.remove()
         var currentDate = new Date()
         var fileName = "golden-ratio-svg.com - " + currentDate.toLocaleString() + ".svg"
         var url = "data:image/svg+xml;utf8," + encodeURIComponent(scope3.project.exportSVG({ asString: true }))
+        var link = document.createElement("a")
+        link.download = fileName
+        link.href = url
+        link.click()
+    }
+
+
+    // TRIANGLES GRID CANVAS
+
+    scope4.activate();
+    var pathTriangle = scope4.project.importSVG(document.getElementById('trianglesSVG'));
+    var trianglesGroup = new scope4.Group()
+    pathTriangle.fitBounds(scope4.view.bounds.scale(0.8))
+    pathTriangle.visible = false
+
+
+    function createTriangle(amount) {
+        trianglesGroup.removeChildren()
+
+        for (var i = 1; i < pathTriangle.children.length; i++) {
+
+            if (i <= amount) {
+                var triangle = new scope4.Path()
+                triangle.strokeColor = strokeColor
+                if (i % 2 == 0) {
+                    triangle.strokeColor = strokeColorGoldenRatio
+                }
+                triangle.strokeWidth = strokeWidth
+                triangle.add(pathTriangle.children[i].segments[0].point)
+                triangle.add(pathTriangle.children[i].segments[1].point)
+                triangle.add(pathTriangle.children[i].segments[2].point)
+                triangle.closePath()
+                triangle.strokeJoin = 'round'
+                trianglesGroup.addChild(triangle)
+            }
+
+
+        }
+
+        trianglesGroup.fitBounds(scope4.view.bounds.scale(0.8))
+
+    }
+
+    var trianglesGridDescription = document.getElementById("trianglesGoldenRatio").getElementsByTagName("h3")[0].getElementsByTagName("span")[0]
+    trianglesInput.oninput = function () {
+        createTriangle(this.value)
+        trianglesGridDescription.innerHTML = this.value
+    }
+
+    createTriangle(trianglesInput.value)
+
+    // DOWNLOAD TRIANGLES
+    downloadTriangles.onclick = function () {
+        pathTriangle.remove()
+        var currentDate = new Date()
+        var fileName = "golden-ratio-svg.com - " + currentDate.toLocaleString() + ".svg"
+        var url = "data:image/svg+xml;utf8," + encodeURIComponent(scope4.project.exportSVG({ asString: true }))
         var link = document.createElement("a")
         link.download = fileName
         link.href = url

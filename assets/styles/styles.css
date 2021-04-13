@@ -71,6 +71,7 @@ h2{
   margin: 0 auto;
   border-radius: 50px;
   position: relative;
+  overflow: hidden;
 }
 
 #mainInputBox img{
@@ -79,6 +80,11 @@ h2{
   right: -70px;
   z-index: 2;
   pointer-events: none;
+}
+@media (max-width: 768px) {
+  #mainInputBox img{
+    display: none;
+  }
 }
 
 #numberInput{
@@ -92,7 +98,6 @@ h2{
   border: 4px solid #FFA692;
   border-radius: 15px;
 }
-
 @media (max-width: 768px) {
   #numberInput{
     max-width: 90%;
@@ -214,8 +219,9 @@ h2{
 
 /* CANVAS GRID */
 
-#radialInput, #linesInput, #rectanglesInput{
-  min-width: 220px;
+#radialInput, #linesInput, #rectanglesInput, #trianglesInput{
+  width: 100%;
+  max-width: 220px;
   margin: 30px 0;
 }
 
@@ -376,43 +382,45 @@ nav .websiteName{
 
 /* CANVAS */
 
-#canvas_1, #canvas_2, #canvas_3{
+#canvas_1, #canvas_2, #canvas_3, #canvas_4{
   /* border: 3px solid darkseagreen; */
   width: 100%;
   height: 100%;
 }
 
-#radialGoldenRatio, #lineGoldenRatio, #rectanglesGoldenRatio{
+#radialGoldenRatio, #lineGoldenRatio, #rectanglesGoldenRatio, #trianglesGoldenRatio{
   text-align: center;
   padding-top: 20px;
   display: block;
   width: 100%;
   margin: 0 auto 40px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
-#radialGoldenRatio .wrapper, #lineGoldenRatio .wrapper, #rectanglesGoldenRatio .wrapper{
+#radialGoldenRatio .wrapper, #lineGoldenRatio .wrapper, #rectanglesGoldenRatio .wrapper, #trianglesGoldenRatio .wrapper{
   max-width: 760px;
   padding: 0;
 }
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
   #radialGoldenRatio .wrapper{
     padding: 0 20px;
   }
-}
+} */
 
-#radialCenter, #linesCenter{
+#radialCenter, #linesCenter, #triangleCenter{
   background-color: white;
   display: block;
   margin: 0 auto;
   /* max-width: 760px; */
 }
 
-#radialCenter h3, #linesCenter h3{
+#radialCenter h3, #linesCenter h3, #triangleCenter h3{
   font-weight: 500;
   font-size: 21px;
 }
 
-#radialCenter span, #linesCenter span{
+#radialCenter span, #linesCenter span, #triangleCenter span{
   font-weight: bold;
 }
 
@@ -439,21 +447,22 @@ nav .websiteName{
 #info{
   margin-top: 80px;
   margin-bottom: 140px;
-}
-
-#info *{
-  text-align: left;
+  width: 100%;
+  padding: 0px 80px 20px 80px;
 }
 
 #info h2{
   font-weight: bolder;
   color: var(--dp-famePea);
-  margin-bottom: 0px;
+  margin-bottom: 10px;
   margin-top: 40px;
+  width: 100%;
+  text-align: left;
 }
 
 #info p{
-  margin: 10px 80px 20px 80px;
+  max-width: 760px;
+  margin: 0 auto;
 }
 
 /* AVATAR */
@@ -464,9 +473,9 @@ nav .websiteName{
   justify-content: left;
   text-align: left;
   margin-top: 60px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 75px;
+  
+  
+
 }
 
 #avatarBox a{
